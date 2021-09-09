@@ -1,29 +1,12 @@
-# README #
+# Repository for CPS474/CPS574 Software Security/Language-based Security
+## Instructor: Dr. Phu Phung
+## Department of Computer Science
+## University of Dayton
 
-This README would normally document whatever steps are necessary to get your application up and running.
+### To clone:
 
-### What is this repository for? ###
+Open a terminal in your Linux shell, and type:
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+```shell
+git clone https://bitbucket.org/ss-lbs/ss-lbs.git 
+```
