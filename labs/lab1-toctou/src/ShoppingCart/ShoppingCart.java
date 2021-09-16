@@ -44,7 +44,7 @@ public class ShoppingCart  {
 			   	Wallet wallet = new Wallet();
 			   	int balance = wallet.getBalance();
 				//Add your name after SS-LBS!!! 
-				out.println("Welcome to SS-LBS's ShoppingCart. The time now is " + (new Date()).toString());
+				out.println("Welcome to Dena Schaeffer's ShoppingCart. The time now is " + (new Date()).toString());
 				out.println("Your balance: " + balance+ " credits");
 				out.println("Please select your product: ");
 			    
