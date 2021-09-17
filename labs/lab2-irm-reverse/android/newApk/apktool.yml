@@ -1,0 +1,38 @@
+!!brut.androlib.meta.MetaInfo
+apkFileName: HybridAppDemo.apk
+compressionType: false
+doNotCompress:
+- resources.arsc
+- META-INF/android.arch.core_runtime.version
+- META-INF/android.arch.lifecycle_livedata-core.version
+- META-INF/android.arch.lifecycle_runtime.version
+- META-INF/android.arch.lifecycle_viewmodel.version
+- META-INF/com.android.support_support-compat.version
+- META-INF/com.android.support_support-core-ui.version
+- META-INF/com.android.support_support-core-utils.version
+- META-INF/com.android.support_support-fragment.version
+- META-INF/com.android.support_support-media-compat.version
+- META-INF/com.android.support_support-v4.version
+- png
+- jpg
+- assets/www/fonts/Framework7Icons-Regular.ae8767c.woff2
+- assets/www/fonts/MaterialIcons-Regular.570eb83.woff2
+- ogg
+isFrameworkApk: false
+packageInfo:
+  forcedPackageId: '127'
+  renameManifestPackage: null
+sdkInfo:
+  minSdkVersion: '19'
+  targetSdkVersion: '27'
+sharedLibrary: false
+sparseResources: false
+unknownFiles: {}
+usesFramework:
+  ids:
+  - 1
+  tag: null
+version: 2.4.1
+versionInfo:
+  versionCode: '10000'
+  versionName: 1.0.0
