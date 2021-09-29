@@ -44,4 +44,32 @@ public class Wallet {
     public void close() throws Exception {
 	this.file.close();
     }
+
+    ///////////////////////////////////////ASSIGNMENT 1///////////////////////////////////////
+
+    /**
+    * Checks if there is enough balance in the wallet, then withdraws the requested value
+    */
+    public int safeWithdraw(int valueToWithdraw) throws Exception {
+        //INSERT CODE TO AVOID DATA RACES (LOCKS)
+        //check if there is enough balance in wallet
+
+        //compare withdraw amount to balance
+            //true: withdraw
+            //false: withdraw balance of wallet
+        //return valueToWithdraw
+    }
+
+    /**
+    * checks if there is enough balance in the wallet, then withdraws the requested value
+    */
+    public int safeDeposit(int valueToDeposit) throws Exception {
+        //INSERT CODE TO AVOID DATA RACES (LOCKS)
+        
+        //acquire lock
+        //add the input value to the current balance
+        //release lock
+
+        //return wallet balance
+
 }
