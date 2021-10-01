@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.util.*;
 
 public class Wallet {
    /**
@@ -51,25 +52,46 @@ public class Wallet {
     * Checks if there is enough balance in the wallet, then withdraws the requested value
     */
     public int safeWithdraw(int valueToWithdraw) throws Exception {
-        //INSERT CODE TO AVOID DATA RACES (LOCKS)
-        //check if there is enough balance in wallet
+        // use locks to avoid data races
+        Lock lock = new ReentrantLock()
+        lock.lock(); // begin critical section  
 
-        //compare withdraw amount to balance
-            //true: withdraw
-            //false: withdraw balance of wallet
-        //return valueToWithdraw
+        //check if there is enough balance in wallet
+        int balance = this.getBalance();
+
+        if (balance>=valueToWithdraw) {
+            balance -= valueToWithdraw;
+            this.file.setLength(0);
+            String str = new Integer(balance).toString()+'\n'; 
+            this.file.writeBytes(str);             
+            lock.unlock(); // exit critical section  
+            return balance;
+        } else {
+            balance = 0;
+            this.file.setLength(0);
+            String str = new Integer(balance).toString()+'\n'; 
+            this.file.writeBytes(str);  
+            lock.unlock(); // exit critical section  
+            throw new Exception("Invalid withdrawal. Please choose a smaller amount to withdraw.");
+        }   return balance;
     }
 
     /**
-    * checks if there is enough balance in the wallet, then withdraws the requested value
+    * adds deposit to wallet
     */
     public int safeDeposit(int valueToDeposit) throws Exception {
-        //INSERT CODE TO AVOID DATA RACES (LOCKS)
-        
-        //acquire lock
-        //add the input value to the current balance
-        //release lock
+        Lock lock = new ReentrantLock()
+        lock.lock(); // begin critical section     
 
-        //return wallet balance
+        try{
+            balance += valueToDeposit;
 
+            this.file.setLength(0);
+            String str = new Integer(balance).toString()+'\n'; 
+            this.file.writeBytes(str); 
+            lock.unlock(); // exit critical section
+            return balance;
+        } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage())
+        }
 }
