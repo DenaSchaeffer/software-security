@@ -2,6 +2,8 @@ import java.util.Scanner;
 import java.util.Date;
 import java.io.*;  
 import java.net.*; 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class ShoppingCart  {
 
@@ -29,6 +31,8 @@ public class ShoppingCart  {
 		final Socket socket;
 		final BufferedReader bufferreader; 
 		final OutputStreamWriter outputstreamwriter; 
+		final Lock lock = new ReentrantLock();
+
 
 	   	public ServerThread(Socket socket, OutputStreamWriter outputstreamwriter, BufferedReader bufferreader){
 		    this.socket = socket;
@@ -39,6 +43,7 @@ public class ShoppingCart  {
 	   	public void run() {
 
 		   	try{
+		   		lock.lock();
 				Scanner input = new Scanner(System.in);
 				PrintWriter out=new PrintWriter(outputstreamwriter);
 			   	Wallet wallet = new Wallet();
@@ -68,7 +73,7 @@ public class ShoppingCart  {
 					out.println("Your balance is less than the price");
 					out.flush();
 				}
-
+				lock.unlock();
 			 	socket.close();
 			}catch(Exception ex){
 		   		System.out.println(ex.getMessage());

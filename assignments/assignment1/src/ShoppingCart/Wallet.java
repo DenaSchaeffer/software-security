@@ -1,7 +1,8 @@
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-import java.util.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Wallet {
    /**
@@ -24,8 +25,8 @@ public class Wallet {
     * @return                   The content of the wallet file as an integer
     */
     public int getBalance() throws IOException {
-	this.file.seek(0);
-	return Integer.parseInt(this.file.readLine());
+    	this.file.seek(0);
+    	return Integer.parseInt(this.file.readLine());
     }
 
    /**
@@ -34,16 +35,16 @@ public class Wallet {
     * @param  newBalance          new balance to write in the wallet
     */
     public void setBalance(int newBalance) throws Exception {
-	this.file.setLength(0);
-	String str = new Integer(newBalance).toString()+'\n'; 
-	this.file.writeBytes(str); 
+    	this.file.setLength(0);
+    	String str = new Integer(newBalance).toString()+'\n'; 
+    	this.file.writeBytes(str); 
     }
 
    /**
     * Closes the RandomAccessFile in this.file
     */
     public void close() throws Exception {
-	this.file.close();
+	   this.file.close();
     }
 
     ///////////////////////////////////////ASSIGNMENT 1///////////////////////////////////////
@@ -53,7 +54,7 @@ public class Wallet {
     */
     public int safeWithdraw(int valueToWithdraw) throws Exception {
         // use locks to avoid data races
-        Lock lock = new ReentrantLock()
+        Lock lock = new ReentrantLock();
         lock.lock(); // begin critical section  
 
         //check if there is enough balance in wallet
@@ -65,7 +66,7 @@ public class Wallet {
             String str = new Integer(balance).toString()+'\n'; 
             this.file.writeBytes(str);             
             lock.unlock(); // exit critical section  
-            return balance;
+            return this.getBalance();
         } else {
             balance = 0;
             this.file.setLength(0);
@@ -73,25 +74,28 @@ public class Wallet {
             this.file.writeBytes(str);  
             lock.unlock(); // exit critical section  
             throw new Exception("Invalid withdrawal. Please choose a smaller amount to withdraw.");
-        }   return balance;
+        }
     }
 
     /**
     * adds deposit to wallet
     */
     public int safeDeposit(int valueToDeposit) throws Exception {
-        Lock lock = new ReentrantLock()
+        Lock lock = new ReentrantLock();
         lock.lock(); // begin critical section     
 
         try{
+            int balance = this.getBalance();
             balance += valueToDeposit;
 
             this.file.setLength(0);
             String str = new Integer(balance).toString()+'\n'; 
             this.file.writeBytes(str); 
             lock.unlock(); // exit critical section
-            return balance;
+            return this.getBalance();
         } catch (Exception e) {
-            System.out.println("Exception: " + e.getMessage())
-        }
+            System.out.println("Exception: " + e.getMessage());
+        } return this.getBalance();
+    }
 }
+
