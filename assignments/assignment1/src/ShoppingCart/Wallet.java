@@ -5,6 +5,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Wallet {
+
    /**
     * The RandomAccessFile of the wallet file
     */  
@@ -16,7 +17,7 @@ public class Wallet {
     * A Wallet object interfaces with the wallet RandomAccessFile
     */
     public Wallet () throws Exception {
-	this.file = new RandomAccessFile(new File("wallet.txt"), "rw");
+		this.file = new RandomAccessFile(new File("wallet.txt"), "rw");
     }
 
    /**
@@ -25,7 +26,10 @@ public class Wallet {
     * @return                   The content of the wallet file as an integer
     */
     public int getBalance() throws IOException {
+		Lock lock = new ReentrantLock();
+        lock.lock(); // begin critical section 
     	this.file.seek(0);
+    	lock.unlock();
     	return Integer.parseInt(this.file.readLine());
     }
 
@@ -35,9 +39,13 @@ public class Wallet {
     * @param  newBalance          new balance to write in the wallet
     */
     public void setBalance(int newBalance) throws Exception {
+    	Lock lock = new ReentrantLock();
+        lock.lock(); // begin critical section 
+        // System.out.println("In set Balance");
     	this.file.setLength(0);
     	String str = new Integer(newBalance).toString()+'\n'; 
     	this.file.writeBytes(str); 
+    	lock.unlock();
     }
 
    /**
@@ -52,26 +60,33 @@ public class Wallet {
     /**
     * Checks if there is enough balance in the wallet, then withdraws the requested value
     */
-    public int safeWithdraw(int valueToWithdraw) throws Exception {
+    public int safeWithdraw(int valueToWithdraw) throws Exception { //use this instead of setBalance
         // use locks to avoid data races
         Lock lock = new ReentrantLock();
         lock.lock(); // begin critical section  
 
         //check if there is enough balance in wallet
-        int balance = this.getBalance();
+        int balance = getBalance();
+
+        System.out.println("" + balance);
+        System.out.println("" + valueToWithdraw);
 
         if (balance>=valueToWithdraw) {
-            balance -= valueToWithdraw;
-            this.file.setLength(0);
-            String str = new Integer(balance).toString()+'\n'; 
-            this.file.writeBytes(str);             
+            balance = this.getBalance(); 
+            balance = balance - valueToWithdraw;
+        	System.out.println("THIS IS THE NEW BALANCE " + balance);
+        	setBalance(balance);
+            // this.file.setLength(0);
+            // String str = new Integer(balance).toString()+'\n';
+            // this.file.writeBytes(str);
             lock.unlock(); // exit critical section  
             return this.getBalance();
         } else {
             balance = 0;
-            this.file.setLength(0);
-            String str = new Integer(balance).toString()+'\n'; 
-            this.file.writeBytes(str);  
+            setBalance(balance);
+            // this.file.setLength(0);
+            // String str = new Integer(balance).toString()+'\n'; 
+            // this.file.writeBytes(str);  
             lock.unlock(); // exit critical section  
             throw new Exception("Invalid withdrawal. Please choose a smaller amount to withdraw.");
         }
@@ -80,10 +95,9 @@ public class Wallet {
     /**
     * adds deposit to wallet
     */
-    public int safeDeposit(int valueToDeposit) throws Exception {
+    public void safeDeposit(int valueToDeposit) throws Exception {
         Lock lock = new ReentrantLock();
-        lock.lock(); // begin critical section     
-
+		lock.lock(); // begin critical section  
         try{
             int balance = this.getBalance();
             balance += valueToDeposit;
@@ -92,10 +106,9 @@ public class Wallet {
             String str = new Integer(balance).toString()+'\n'; 
             this.file.writeBytes(str); 
             lock.unlock(); // exit critical section
-            return this.getBalance();
         } catch (Exception e) {
             System.out.println("Exception: " + e.getMessage());
-        } return this.getBalance();
+        } 
     }
 }
 

@@ -41,9 +41,7 @@ public class ShoppingCart  {
 		}
 
 	   	public void run() {
-
 		   	try{
-		   		lock.lock();
 				Scanner input = new Scanner(System.in);
 				PrintWriter out=new PrintWriter(outputstreamwriter);
 			   	Wallet wallet = new Wallet();
@@ -61,9 +59,13 @@ public class ShoppingCart  {
 			    	out.flush();
 			    	String product = bufferreader.readLine(); 
 			    	int price = Store.getPrice(product);
-				
+			    	// System.out.println("car price: " + price);
+			    
+			    // System.out.println("car price: " + price);
+
 				if(balance>=price){
-					wallet.safeWithdraw(balance-price);
+					// System.out.println("<DEBUG car price: " + price);
+					wallet.safeWithdraw(price);
 					Pocket pocket = new Pocket();
 					pocket.addProduct(product);
 					out.println("You have sucessfully purchased a '" + product + "'");
@@ -73,7 +75,6 @@ public class ShoppingCart  {
 					out.println("Your balance is less than the price");
 					out.flush();
 				}
-				lock.unlock();
 			 	socket.close();
 			}catch(Exception ex){
 		   		System.out.println(ex.getMessage());
