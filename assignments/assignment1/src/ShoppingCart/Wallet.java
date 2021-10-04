@@ -38,15 +38,15 @@ public class Wallet {
     *
     * @param  newBalance          new balance to write in the wallet
     */
-    public void setBalance(int newBalance) throws Exception {
-    	Lock lock = new ReentrantLock();
-        lock.lock(); // begin critical section 
-        // System.out.println("In set Balance");
-    	this.file.setLength(0);
-    	String str = new Integer(newBalance).toString()+'\n'; 
-    	this.file.writeBytes(str); 
-    	lock.unlock();
-    }
+    // public void setBalance(int newBalance) throws Exception { //NOTE: DO NOT NEED THIS METHOD, REPLACED BY safeWithdraw()
+    // 	Lock lock = new ReentrantLock();
+    //     lock.lock(); // begin critical section 
+    //     // System.out.println("In set Balance");
+    // 	this.file.setLength(0);
+    // 	String str = new Integer(newBalance).toString()+'\n'; 
+    // 	this.file.writeBytes(str); 
+    // 	lock.unlock();
+    // }
 
    /**
     * Closes the RandomAccessFile in this.file
@@ -58,9 +58,9 @@ public class Wallet {
     ///////////////////////////////////////ASSIGNMENT 1///////////////////////////////////////
 
     /**
-    * Checks if there is enough balance in the wallet, then withdraws the requested value
+    * Checks if there is enough balance in the wallet, then withdraws the requested value, replaces setBalance()
     */
-    public int safeWithdraw(int valueToWithdraw) throws Exception { //use this instead of setBalance
+    public int safeWithdraw(int valueToWithdraw) throws Exception { 
         // use locks to avoid data races
         Lock lock = new ReentrantLock();
         lock.lock(); // begin critical section  
@@ -74,19 +74,17 @@ public class Wallet {
         if (balance>=valueToWithdraw) {
             balance = this.getBalance(); 
             balance = balance - valueToWithdraw;
-        	System.out.println("THIS IS THE NEW BALANCE " + balance);
-        	setBalance(balance);
-            // this.file.setLength(0);
-            // String str = new Integer(balance).toString()+'\n';
-            // this.file.writeBytes(str);
+        	// System.out.println("<DEBUG>THIS IS THE NEW BALANCE " + balance);
+            this.file.setLength(0);
+            String str = new Integer(balance).toString()+'\n';
+            this.file.writeBytes(str);
             lock.unlock(); // exit critical section  
             return this.getBalance();
         } else {
             balance = 0;
-            setBalance(balance);
-            // this.file.setLength(0);
-            // String str = new Integer(balance).toString()+'\n'; 
-            // this.file.writeBytes(str);  
+            this.file.setLength(0);
+            String str = new Integer(balance).toString()+'\n'; 
+            this.file.writeBytes(str);  
             lock.unlock(); // exit critical section  
             throw new Exception("Invalid withdrawal. Please choose a smaller amount to withdraw.");
         }

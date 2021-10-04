@@ -1,7 +1,8 @@
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
-
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Pocket {
    /**
@@ -24,8 +25,11 @@ public class Pocket {
     * @param  product           product name to add to the pocket (e.g. "car")
     */
     public void addProduct(String product) throws Exception {
+          Lock lock = new ReentrantLock();
+          lock.lock(); // begin critical section 
           this.file.seek(this.file.length());
           this.file.writeBytes(product+'\n'); 
+          lock.unlock();
     }
 
    /**
