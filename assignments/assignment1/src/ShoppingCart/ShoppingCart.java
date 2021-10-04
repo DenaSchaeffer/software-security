@@ -58,17 +58,13 @@ public class ShoppingCart  {
 				out.println("What do you want to buy, type e.g., pen?");
 			    	out.flush();
 			    	String product = bufferreader.readLine(); 
-			    	int price = Store.getPrice(product);
-			    	// System.out.println("car price: " + price);
-			    
-			    // System.out.println("car price: " + price);
+			    	int price = Store.getPrice(product);			    
 
 				if(balance>=price){
-					// System.out.println("<DEBUG car price: " + price);
 					wallet.safeWithdraw(price);
 					Pocket pocket = new Pocket();
 					pocket.addProduct(product);
-					out.println("You have sucessfully purchased a '" + product + "'");
+					out.println("You have successfully purchased a '" + product + "'");
 					out.println("Your new balance: " + wallet.getBalance()+ " credits");
 			        	out.flush();
 				}else{

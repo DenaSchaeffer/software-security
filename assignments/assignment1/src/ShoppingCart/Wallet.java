@@ -68,9 +68,6 @@ public class Wallet {
         //check if there is enough balance in wallet
         int balance = getBalance();
 
-        System.out.println("" + balance);
-        System.out.println("" + valueToWithdraw);
-
         if (balance>=valueToWithdraw) {
             balance = this.getBalance(); 
             balance = balance - valueToWithdraw;
