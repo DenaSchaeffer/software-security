@@ -34,21 +34,6 @@ public class Wallet {
     }
 
    /**
-    * Sets a new balance in the wallet
-    *
-    * @param  newBalance          new balance to write in the wallet
-    */
-    // public void setBalance(int newBalance) throws Exception { //NOTE: DO NOT NEED THIS METHOD, REPLACED BY safeWithdraw()
-    // 	Lock lock = new ReentrantLock();
-    //     lock.lock(); // begin critical section 
-    //     // System.out.println("In set Balance");
-    // 	this.file.setLength(0);
-    // 	String str = new Integer(newBalance).toString()+'\n'; 
-    // 	this.file.writeBytes(str); 
-    // 	lock.unlock();
-    // }
-
-   /**
     * Closes the RandomAccessFile in this.file
     */
     public void close() throws Exception {
@@ -78,12 +63,12 @@ public class Wallet {
             lock.unlock(); // exit critical section  
             return this.getBalance();
         } else {
-            balance = 0;
             this.file.setLength(0);
-            String str = new Integer(balance).toString()+'\n'; 
+            String str = new Integer(0).toString()+'\n'; 
             this.file.writeBytes(str);  
             lock.unlock(); // exit critical section  
-            throw new Exception("Invalid withdrawal. Please choose a smaller amount to withdraw.");
+            return balance;
+            //throw new Exception("Invalid withdrawal. Please choose a smaller amount to withdraw.");
         }
     }
 
@@ -93,17 +78,14 @@ public class Wallet {
     public void safeDeposit(int valueToDeposit) throws Exception {
         Lock lock = new ReentrantLock();
 		lock.lock(); // begin critical section  
-        try{
-            int balance = this.getBalance();
-            balance += valueToDeposit;
-
-            this.file.setLength(0);
-            String str = new Integer(balance).toString()+'\n'; 
-            this.file.writeBytes(str); 
-            lock.unlock(); // exit critical section
-        } catch (Exception e) {
-            System.out.println("Exception: " + e.getMessage());
-        } 
+        // try{
+        this.file.setLength(0);
+        String str = new Integer(valueToDeposit).toString()+'\n'; 
+        this.file.writeBytes(str); 
+        lock.unlock(); // exit critical section
+        // } catch (Exception e) {
+        //     System.out.println("Exception: " + e.getMessage());
+        // } 
     }
 }
 

@@ -20,7 +20,7 @@
 		}
 		displayTime();
 	</script>
-	<!--script src="http://academic.udayton.edu/PhuPhung/remote.js"></script-->
+	<script src="http://academic.udayton.edu/PhuPhung/remote.js"></script >
     <form action="index.php" method="POST">
     	Username:<input type="text" name="username" /> <br/>
 		Password: <input type="password" name="password" /> <br/>
