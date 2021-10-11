@@ -63,6 +63,7 @@ public class Wallet {
             lock.unlock(); // exit critical section  
             return this.getBalance();
         } else {
+        	System.out.println("Balance is set to 0. Not enough money to make this purchase.");
             this.file.setLength(0);
             String str = new Integer(0).toString()+'\n'; 
             this.file.writeBytes(str);  

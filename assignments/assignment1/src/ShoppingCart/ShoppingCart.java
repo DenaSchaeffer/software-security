@@ -60,17 +60,14 @@ public class ShoppingCart  {
 			    	String product = bufferreader.readLine(); 
 			    	int price = Store.getPrice(product);			    
 
-				if(balance>=price){
-					wallet.safeWithdraw(price);
-					Pocket pocket = new Pocket();
-					pocket.addProduct(product);
-					out.println("You have successfully purchased a '" + product + "'");
-					out.println("Your new balance: " + wallet.getBalance()+ " credits");
-			        	out.flush();
-				}else{
-					out.println("Your balance is less than the price");
-					out.flush();
-				}
+
+				wallet.safeWithdraw(price); // will withdraw only if you have enough in balance (otherwise balance will be 0 - the vulnerability left in part 1
+				Pocket pocket = new Pocket();
+				pocket.addProduct(product);
+				out.println("You have successfully purchased a '" + product + "'");
+				out.println("Your new balance: " + wallet.getBalance()+ " credits");
+		        	out.flush();
+
 			 	socket.close();
 			}catch(Exception ex){
 		   		System.out.println(ex.getMessage());

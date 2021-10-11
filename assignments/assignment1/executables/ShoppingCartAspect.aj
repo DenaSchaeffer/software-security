@@ -27,7 +27,7 @@ public aspect ShoppingCartAspect{
 				System.out.println("" + wallet.getBalance());
 		        System.out.println("The amount is deposited back into your account.");  
 			} else {
-				System.exit(0);
+				//System.exit(0);
 			}
 		} catch(Exception e) {
 			System.out.println(e);
