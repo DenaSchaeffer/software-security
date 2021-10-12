@@ -18,6 +18,7 @@
 	//the case username and password is provided
     	if (/*TODO for TASK 3.b*/mockchecklogin($username,$password)){ 
       		/*TODO for TASK 1.a*/;
+      		$_SESSION["logged"] = TRUE;
 			$_SESSION["username"] = $username;
 			$welcome = "Welcome "; //not previously logged-in 
     	}else{//failed
@@ -25,7 +26,7 @@
 		}
 	}else{//no username/password is provided
 		//check if the session has NOT been logged in, redirect to the login page
-		if (/*TODO for TASK 1.b*/) {
+		if (!isset($_SESSION["logged"]) or $_SESSION["logged"] != TRUE) { //1.b
     		redirect_login('You have not logged in. Please login first!');
   		}
 	}

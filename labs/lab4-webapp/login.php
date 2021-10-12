@@ -10,11 +10,12 @@
    	<h2>Simple Login Form by <font color="blue">Phu Phung</font>, customized by Dena Schaeffer</h2>
 <?php
 	/*TODO for TASK 2.a*/
-	
-
-
-
-
+	session_start();
+	if(isset($_SESSION["logged"]) and $_SESSION["logged"] === TRUE) {
+		echo "<script>alert('You have been logged in. Welcome back!');</script>";
+		header("Refresh:0;url=index.php");
+		exit();
+	}
 
 	echo "Current time: " . date("Y-m-d h:i:sa") . "<br>\n";
 ?>
