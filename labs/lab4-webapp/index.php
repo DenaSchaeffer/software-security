@@ -60,7 +60,15 @@
   		$sql = "SELECT * FROM users where username='" . $username . "' AND password = password('" . $password . "')";
   		echo "DEBUG>sql=" . $sql . "\n<br>";
 
-		return TRUE; //RETURNING TRUE IS FOR DEBUG ONLY [DEFAULT = FALSE]
+  		$result = mysqli_query($dbconnection,$sql);
+  		if($result) {
+  			//check if matching
+  			$row = mysqli_fetch_assoc($result);
+  			if ($row['username'] === $username)
+  				return TRUE;
+  		}
+
+		return FALSE; //RETURNING TRUE IS FOR DEBUG ONLY [DEFAULT = FALSE]
   	}
 ?>
 </body>
