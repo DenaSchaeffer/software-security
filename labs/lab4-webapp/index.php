@@ -16,7 +16,7 @@
   	/*for debug only*/echo "DEBUG>Received: username=\"" . $username .  "\" and password=\"" . $password . "\"<br>\n";
 	if (isset($username) and isset($password) ){
 	//the case username and password is provided
-    	if (/*TODO for TASK 3.b*/mockchecklogin($username,$password)){ 
+    	if (/*TODO for TASK 3.b*/checklogin($username,$password)){ 
       		/*TODO for TASK 1.a*/;
       		$_SESSION["logged"] = TRUE;
 			$_SESSION["username"] = $username;
@@ -57,17 +57,10 @@
     		exit();
 		}
 		/*TODO for TASK 3.a*/
-  		
+  		$sql = "SELECT * FROM users where username='" . $username . "' AND password = password('" . $password . "')";
+  		echo "DEBUG>sql=" . $sql . "\n<br>";
 
-
-
-
-
-
-
-
-
-		return FALSE;
+		return TRUE; //RETURNING TRUE IS FOR DEBUG ONLY [DEFAULT = FALSE]
   	}
 ?>
 </body>
