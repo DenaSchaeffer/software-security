@@ -19,6 +19,7 @@
     	if (mockchecklogin($username,$password)){ 
       		$_SESSION["logged"]=TRUE;
 			$_SESSION["username"] = $username;
+			$_SESSION["browser"] = $_SERVER["HTTP_USER_AGENT"];
 			$welcome = "Welcome "; //not previously logged-in 
     	}else{//failed
 			redirect_login('Invalid username/password');
@@ -28,6 +29,10 @@
 		if ($_SESSION["logged"]!=TRUE) {
     		redirect_login('You have not logged in. Please login first!');
   		}
+  		if ($_SESSION["browser"] != $_SERVER["HTTP_USER_AGENT"]){
+			echo "Session hijacking attack is detected!";
+			die();
+		}
 	}
 	//the main business logic implementation of the page
 	echo "Current time: " . date("Y-m-d h:i:sa") . "\n";
